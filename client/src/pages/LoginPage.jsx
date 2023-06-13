@@ -1,25 +1,32 @@
 import { useState } from "react";
+import { Navigate } from "react-router-dom";
 
 
 
 export default function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [redirect, setRedirect] = useState(false);
 
   async function login(event) {
     event.preventDefault();
-    await fetch("http://localhost:4000/login", {
+    const response = await fetch("http://localhost:4000/login", {
       method: "POST",
       body: JSON.stringify({ username, password }),
       headers: { "Content-Type": "application/json" },
-    }).then(response => {
-      if (response.status === 200) {
-        alert("User logged in successfully");
-      } else {
-        alert("Failed to log in");
-      }
-    });
+      credentials: "include",
+   });
+    if (response.ok) {
+      setRedirect(true);
+    } else {
+      alert("Failed to login");
+    }
   }
+
+  if (redirect) {
+    return <Navigate to={"/"} />;
+  }
+
 
   return (
     <form className="login" onSubmit={login}>
@@ -28,5 +35,6 @@ export default function LoginPage() {
         <input type="password" placeholder="password" value={password} onChange={event => setPassword(event.target.value)} />
         <button type="submit">Login</button>
     </form>
-  )
+  );
+
 }
