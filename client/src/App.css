@@ -10,7 +10,7 @@ body {
   background-color: black;
 }
 
-img {
+.brown {
   max-width: 100%;
   border: 2px solid #0ddf8b;
   border-radius: 10px;
@@ -27,6 +27,7 @@ header {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 50px;
+  /* position: fixed; */
 }
 
 header a {
