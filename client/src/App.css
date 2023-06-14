@@ -5,7 +5,7 @@
 }
 
 body {
-  color: white;
+  /* color: white; */
   font-family: "Poppins", sans-serif;
   background-color: black;
 }
@@ -140,8 +140,13 @@ h1 {
   color: #0ddf8b;
 }
 
-form h1 {
+form.login h1, form.register h1 {
   text-align: center;
+}
+
+.postBtn {
+  margin-top: 40px;
+  
 }
 
 
