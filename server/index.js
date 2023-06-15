@@ -2,10 +2,14 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const User = require('./models/User');
+const Posts = require('./models/Posts');
 const bcrypt = require('bcryptjs');
 const app = express();
 const jwt = require('jsonwebtoken')
+const multer = require('multer');
+const fileMiddelware = multer({dest: 'uploads/'});
 const cookieParser = require('cookie-parser');
+const fs = require('fs');
 
 const salt = bcrypt.genSaltSync(10);
 const secret = 'oLFtxrqkbcboJfmG';
@@ -13,6 +17,7 @@ const secret = 'oLFtxrqkbcboJfmG';
 app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
 app.use(express.json());
 app.use(cookieParser());
+app.use('/uploads', express.static('uploads'));
 
 mongoose.connect("mongodb+srv://blogo:oLFtxrqkbcboJfmG@cluster0.a71rbrz.mongodb.net/?retryWrites=true&w=majority")
 
@@ -65,8 +70,68 @@ app.get('/profile', (req, res) => {
     });
 });
 
+
 app.post('/logout', (req, res) => {
     res.cookie("token", "").json("Logged out");
+});
+
+// app.post('/post', fileMiddelware.single("files"), async (req, res) => {
+//     const {originalname, path} = req.file;
+//     const parts = originalname.split(".");
+//     const ext = parts[parts.length - 1];
+//     const newPath = path + "." + ext;
+//     fs.renameSync(path, newPath);
+
+   
+//     jwt.verify(token, secret, {}, (err, payload) => {
+//         if (err) return res.status(401).json(err);
+        
+//         const {username, id} = payload;
+//         res.json({username, id});
+//     });
+
+   
+
+//     res.json(postDoc);
+// })
+
+
+app.post('/post', fileMiddelware.single("files"), async (req, res) => {
+    const {originalname, path} = req.file;
+    const parts = originalname.split(".");
+    const ext = parts[parts.length - 1];
+    const newPath = path + "." + ext;
+    fs.renameSync(path, newPath);
+
+    const token = req.cookies.token;
+    jwt.verify(token, secret, {}, async(err, payload) => {
+        if (err) return res.status(401).json(err);
+        const {title, content, summary} = req.body;
+        const postDoc = await Posts.create({
+            title,
+            content,
+            summary,
+            coverImg: newPath,
+            author: payload.id,
+    });
+        res.json(postDoc);
+    });
+})
+
+
+app.get('/posts', async (req, res) => {
+    res.json(
+      await Posts.find()
+        .populate('author', ["username"])
+        .sort({createdAt: -1})
+        .limit(20)
+    )
+});
+
+app.get('/post/:id', async (req, res) => {
+    const {id} = req.params;
+    const postDoc = await Posts.findById(id).populate('author',["username"]);
+    res.json(postDoc);
 });
 
 

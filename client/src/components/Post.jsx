@@ -1,27 +1,26 @@
-export default function Post() {
+import { format } from "date-fns";
+import { NavLink } from "react-router-dom";
+
+export default function Post({_id, title, coverImg, summary, createdAt, author}) {
   return (
     <div className="post">
       <div className="image">
-        <img
-          src="https://www.tu.org/wp-content/uploads/2021/03/streamerbrown.jpg"
-          alt=""
+        <NavLink to={`/post/${_id}`}>
+        <img src={"http://localhost:4000/" + coverImg} alt=""
           className="brown"
         />
+        </NavLink>
       </div>
       <div className="texts">
-        <h2>Catching Big Buttery Browns, in Lakes or Rivers</h2>
+        <NavLink to={`/post/${_id}`}>
+        <h2>{title}</h2>
+        </NavLink>
         <p className="info">
-          <span className="author">
-            By: <a href="">Kirk Deeter</a>
-          </span>
-          <span className="time">March 23, 2021</span>
+          <a className="author">{author.username}</a>
+          <time>{format(new Date(createdAt), "MMM d, yyyy h:mm aaa ")}</time>
+          
         </p>
-        <p className="summary">
-          When fishing for brown trout in lakes, try getting your fly as deep as
-          possible by using larger-sized flies with weighted droppers. Streamers
-          are an excellent choice for this situation. If you're fishing a river,
-          then Terrestrials or Stoneflies imitations will work great.
-        </p>
+        <p className="summary">{summary}</p>
       </div>
     </div>
   );
