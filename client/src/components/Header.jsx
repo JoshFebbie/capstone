@@ -2,6 +2,7 @@ import { NavLink } from "react-router-dom";
 import { useEffect, useState, useContext } from "react";
 import { UserContext } from "../UserContext";
 
+
 export default function Header() {
   const { setUserInfo, userInfo } = useContext(UserContext);
   useEffect(() => {

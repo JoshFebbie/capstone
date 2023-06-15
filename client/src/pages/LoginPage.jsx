@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Navigate } from "react-router-dom";
-import { useContext } from "react";
 import { UserContext } from "../UserContext";
+
 
 
 
@@ -38,8 +38,14 @@ export default function LoginPage() {
   return (
     <form className="login" onSubmit={login}>
         <h1>Login</h1>
-        <input type="text" placeholder="username" value={username} onChange={event => setUsername(event.target.value)} />
-        <input type="password" placeholder="password" value={password} onChange={event => setPassword(event.target.value)} />
+        <input type="text" 
+        placeholder="username" 
+        value={username} 
+        onChange={event => setUsername(event.target.value)} />
+        <input type="password" 
+        placeholder="password" 
+        value={password} 
+        onChange={event => setPassword(event.target.value)} />
         <button type="submit">Login</button>
     </form>
   );

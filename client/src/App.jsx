@@ -1,5 +1,5 @@
 import "./App.css";
-// import Post from "./components/Post";
+import Post from "./components/Post";
 // import Header from "./components/Header";
 import { Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout";
@@ -7,7 +7,6 @@ import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import { UserContextProvider } from "./UserContext";
-import Post from "./pages/Post";
 import PostPage from "./pages/PostPage";
 import EditPost from "./pages/EditPost";
 
@@ -21,7 +20,7 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/create" element={<Post />}/>
         <Route path="/post/:id" element={<PostPage />}/>
-        <Route path="/edit/:id" element={<EditPost />}></Route>
+        <Route path="/edit/:id" element={<EditPost />} />
       </Route>
      </Routes>
     </UserContextProvider>

@@ -1,8 +1,9 @@
 import { useEffect, useState, useContext } from 'react';
 import { useParams } from 'react-router-dom';
-import { formatISO9075 } from 'date-fns';
+import { format } from 'date-fns';
 import { UserContext } from '../UserContext';
 import { NavLink } from 'react-router-dom';
+
 
 
 
@@ -12,7 +13,7 @@ export default function PostPage() {
     const {userInfo} = useContext(UserContext);
     const {id} = useParams();
     useEffect(() => {
-        fetch("http://localhost:4000/post/" + id).then((response) => {
+        fetch("http://localhost:4000/posts/").then((response) => {
             response.json().then(postInfo => {
                 setPostInfo(postInfo);
             })
@@ -29,7 +30,7 @@ export default function PostPage() {
       <div className='image'>
         <img src={`http://localhost:4000/${postInfo.coverImg}`} alt="" />
       </div>
-      <time>{formatISO9075(new Date(postInfo.createdAt))}</time>
+      <time>{format(new Date(postInfo.createdAt))}</time>
       <div className='author'>By @{postInfo.author.username}</div>
       {userInfo.id === postInfo.author._id && (
         <div className='edit-row'>

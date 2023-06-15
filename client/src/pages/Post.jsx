@@ -1,34 +1,16 @@
-import ReactQuill from 'react-quill';
+// import ReactQuill from 'react-quill';
 import { useState } from 'react';
 import 'react-quill/dist/quill.snow.css';
 import { Navigate } from 'react-router-dom';
+import Editor from '../components/Editor';
 
 
-
-
-
-
-const modules = {
-    toolbar: [
-        [{ 'header': [1, 2, false] }],
-        ['bold', 'italic', 'underline','strike', 'blockquote'],
-        [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
-        ['link', 'image'],
-        ['clean'],
-    ]
-}
-const formats = [
-    'header',
-    'bold', 'italic', 'underline', 'strike', 'blockquote',
-    'list', 'bullet', 'indent',
-    'link', 'image'
-]
 
 export default function Post() {
     const [title, setTitle] = useState("");
     const [summary, setSummary] = useState("");
     const [content, setContent] = useState("");
-    const [files, setFiles] = useState(null);
+    const [files, setFiles] = useState("");
     const [redirect, setRedirect] = useState(false);
 
 async function handleSubmit(event) {
@@ -69,13 +51,8 @@ if (redirect) {
         onChange={event => setSummary(event.target.value)}/>
         
         <input type="file" 
-        onChange={event => setFiles(event.target.files)}
-        />
-        <ReactQuill 
-        onChange={newValue => setContent(newValue)}
-        value={content} 
-        modules={modules} 
-        formats={formats}/>
+        onChange={event => setFiles(event.target.files)} />
+      <Editor value={content} onChange={setContent} />
         <button type="submit" className='postBtn'>POST</button>
     </form>
   )
